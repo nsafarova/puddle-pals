@@ -110,7 +110,7 @@
       '<div class="row"><span class="price">' + money(PRICE) + '</span></div>';
     var btn = el("button", "btn sm", "Add to cart");
     btn.type = "button";
-    btn.addEventListener("click", function () { add(p.id); openCart(); });
+    btn.addEventListener("click", function () { add(p.id); clipped(btn); });
     body.querySelector(".row").appendChild(btn);
     card.appendChild(shot); card.appendChild(body);
     grid.appendChild(card);
@@ -159,7 +159,7 @@
     });
     addTrio.addEventListener("click", function () {
       var order = PALS.map(function (p) { return p.id; }).filter(function (id) { return picked.indexOf(id) > -1; });
-      add("trio:" + order.join("+")); picked = []; refresh(); openCart();
+      add("trio:" + order.join("+")); picked = []; refresh(); clipped(addTrio);
     });
     refresh();
 
@@ -170,7 +170,7 @@
       '<div class="fiveDrops">' + PALS.map(drop).join("") + "</div>" +
       '<div class="row"><span class="price">' + money(FULL_PRICE) + ' <span class="small">save ' + money(5 * PRICE - FULL_PRICE) + "</span></span></div></div>";
     var addFull = el("button", "btn sm", "Add full set to cart"); addFull.type = "button";
-    addFull.addEventListener("click", function () { add("full"); openCart(); });
+    addFull.addEventListener("click", function () { add("full"); clipped(addFull); });
     full.querySelector(".row").appendChild(addFull);
     var fShot = mediaSlider([{ src: "assets/packaging/full.jpg", alt: "The Full Texas Set gift box", fallback: '<span class="ph" style="display:block">Add assets/packaging/full.jpg</span>' }]);
     full.insertBefore(fShot, full.firstChild);
@@ -281,6 +281,60 @@
     co.addEventListener("click", function () { step = "checkout"; renderCart(); });
     foot.appendChild(co);
   }
+
+  // Add to cart delight: a drop flies to the cart, the button says Clipped, then the cart opens.
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function clipped(btn) {
+    var target = $("openCart"), cnt = $("cartCount");
+    cnt.classList.remove("bump"); void cnt.offsetWidth; cnt.classList.add("bump");
+    var old = btn.textContent;
+    btn.textContent = "Clipped!"; btn.classList.add("ok");
+    setTimeout(function () { btn.textContent = old; btn.classList.remove("ok"); }, 1300);
+    if (reduce || !btn.animate) { openCart(); return; }
+    var a = btn.getBoundingClientRect(), b = target.getBoundingClientRect();
+    var d = el("div", "flydrop"); document.body.appendChild(d);
+    var dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+    d.style.left = (a.left + a.width / 2 - 11) + "px"; d.style.top = (a.top + a.height / 2 - 14) + "px";
+    var an = d.animate([
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: "translate(" + dx * 0.5 + "px," + (dy * 0.5 - 60) + "px) scale(1.15)", opacity: 1, offset: 0.5 },
+      { transform: "translate(" + dx + "px," + dy + "px) scale(.4)", opacity: 0.2 }
+    ], { duration: 650, easing: "cubic-bezier(.3,.7,.4,1)" });
+    an.onfinish = function () { d.remove(); openCart(); };
+  }
+
+  // Scroll reveal: elements fade and pop in one after another. Content stays visible if JS or motion is off.
+  (function () {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    document.documentElement.classList.add("js");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { var t = e.target; t.classList.add("in"); io.unobserve(t); setTimeout(function () { t.classList.remove("rv", "in"); t.style.removeProperty("--d"); }, 1300); } });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    function watch() {
+      var sel = ".sec-head, .card, .gift, .gal2 .shot, .how, .step, .cmp .box, .mission, .faq details, .closer";
+      Array.prototype.forEach.call(document.querySelectorAll(sel), function (n, i) {
+        if (n.getAttribute("data-rv")) return;
+        n.setAttribute("data-rv", "1"); n.classList.add("rv");
+        var sib = Array.prototype.indexOf.call(n.parentNode.children, n);
+        n.style.setProperty("--d", Math.min(sib, 5) * 70 + "ms");
+        io.observe(n);
+      });
+    }
+    watch(); setTimeout(watch, 600); setTimeout(watch, 1800);
+  })();
+
+  // Nav: shrink and blur once you scroll, and a menu button on phones.
+  (function () {
+    var nav = document.querySelector(".nav"), btn = $("menuBtn");
+    function onScroll() { nav.classList.toggle("sm", window.scrollY > 40); }
+    window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    btn.addEventListener("click", function () {
+      var open = nav.classList.toggle("open"); btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    Array.prototype.forEach.call(nav.querySelectorAll("ul a"), function (a) {
+      a.addEventListener("click", function () { nav.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); });
+    });
+  })();
 
   function openCart() {
     lastFocus = document.activeElement;
