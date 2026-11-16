@@ -255,3 +255,9 @@ footer p { color: var(--muted); font-size: 14px; max-width: 60ch; }
 .chip.c1{right:auto;left:10%;top:60px}
 @media (max-width:900px){.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}.facts li{padding-right:0;border:0}.facts b{font-size:24px}.chip.c1{left:4%;top:30px}}
 .made{font-size:13px;letter-spacing:.4px;color:#BFD0F5;margin-top:4px}
+
+/* how it works video */
+.how-video{margin:28px 0 8px;border-radius:var(--r-lg);overflow:hidden;background:var(--cobalt);position:relative}
+.how-video video{display:block;width:100%;height:auto;max-height:520px;object-fit:cover}
+.how-video figcaption{position:absolute;left:16px;bottom:14px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--cobalt);font-size:14px;font-weight:600}
+@media (prefers-reduced-motion:reduce){.how-video video{animation:none}}
