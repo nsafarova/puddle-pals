@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>puddle pals | Rain protection that clips on</title>
+<meta name="description" content="Collectible Texas bag charms that unfold into a lightweight rain poncho.">
+<link rel="icon" href="assets/logo-icon-round.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,wght@1,600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav" aria-label="Main">
+    <a href="#top" aria-label="puddle pals home"><img src="assets/logo-lockup.svg" alt="puddle pals" width="190" height="44"></a>
+    <ul>
+      <li><a class="l" href="#shop">Meet the pals</a></li>
+      <li><a class="l" href="#setsec">Sets</a></li>
+      <li><a class="l" href="#gifts">Gifts</a></li>
+      <li><a class="l" href="#how">How it works</a></li>
+      <li><a class="l" href="#why">Why puddle pals</a></li>
+      <li><a class="l" href="#mission">Our mission</a></li>
+      <li><a class="l" href="#faq">FAQ</a></li>
+    </ul>
+    <button class="btn sm cart-btn" id="openCart" type="button" aria-label="Open cart">Cart <span class="count" id="cartCount">0</span></button>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="copy">
+      <span class="eyebrow"><i></i>Collectible Texas bag charms</span>
+      <h1>rain protection that <em>clips on</em></h1>
+      <p class="lead">A plush Texas pal for your bag with an extra poncho folded inside, ready for the sudden downpour. Keep one, or give one as a gift.</p>
+      <div class="cta">
+        <a class="btn orange" href="#shop">Shop the pals</a>
+        <a class="btn ghost" href="#gifts">Give a pal</a>
+      </div>
+      <p class="made">Designed and shipped in Houston, Texas</p>
+    </div>
+    <div class="hv" id="heroVisual">
+      <div class="hv-main shot missing" data-photo="assets/mocks/festival.jpg" data-alt="Two friends in printed rain ponchos at a rainy Texas festival, each with a plush Puddle Pals charm clipped to their tote"></div>
+      <figure class="hv-card">
+        <div class="hv-thumb shot missing" data-photo="assets/mocks/poncho-pouch.jpg" data-alt="A plush bluebonnet charm unzipped to show a folded waterproof poncho"></div>
+        <figcaption><b>Unzip. Unfold. Stay dry.</b><span>A poncho lives inside every pal</span></figcaption>
+      </figure>
+      <span class="chip c1">Clips on any bag</span>
+      <span class="chip c2">Gift ready</span>
+      <div class="rain" id="rain" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <section id="shop">
+    <div class="sec-head">
+      <span class="label">The collection</span>
+      <h2>meet the five pals</h2>
+      <p>Five characters for Texas, one pal for your bag. More states are on the way.</p>
+    </div>
+    <div class="grid" id="products"></div>
+  </section>
+
+  <section id="setsec" style="padding-top:0">
+    <div class="sec-head">
+      <span class="label">Sets</span>
+      <h2>more pals, one box</h2>
+      <p>Every pal is packaged individually. Sets come together in one box, and the more you take, the less each pal costs.</p>
+    </div>
+    <div class="grid" id="sets"></div>
+  </section>
+
+  <section id="gifts" style="padding-top:0">
+    <div class="gift">
+      <div class="gift-copy">
+        <span class="label">Gifts</span>
+        <h2>a gift that is there when it rains</h2>
+        <p>Every pal is a collectible Texas charm and an extra poncho for sudden rain, so it is a gift they will notice and then actually use. Pick the pal that sounds like them.</p>
+        <p class="small">Gift packaging is available on any pal or set for a small extra fee at checkout.</p>
+        <a class="btn orange" href="#shop">Choose a pal</a>
+      </div>
+      <ul class="gift-list">
+        <li><span class="label">For a friend who loves Texas</span><p>Five characters from home, each with its own story.</p></li>
+        <li><span class="label">For a student heading to class</span><p>Small and light on a backpack, with a poncho ready for a sudden downpour.</p></li>
+        <li><span class="label">For birthdays and graduations</span><p>Collect all five, or start someone off with a favorite.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="gallery" style="padding-top:0">
+    <div class="sec-head">
+      <span class="label">In the wild</span>
+      <h2>made for houston days</h2>
+      <p>Clipped to a backpack on campus, tucked in a tote at a festival, ready the second the clouds open.</p>
+    </div>
+    <div class="gal2">
+      <div class="shot missing g-a" data-photo="assets/mocks/festival.jpg" data-alt="Two friends in printed rain ponchos at a rainy Texas festival, each with a matching plush charm on their tote"><span class="ph">Add assets/mocks/festival.jpg</span><span class="cap">At the festival</span></div>
+      <div class="shot missing g-c" data-photo="assets/mocks/poncho-pouch.jpg" data-alt="A plush bluebonnet pouch charm unzipped to show a folded waterproof poncho inside"><span class="ph">Add assets/mocks/poncho-pouch.jpg</span><span class="cap">Poncho inside</span></div>
+      <div class="shot missing g-b" data-photo="assets/mocks/campus-library.jpg" data-alt="A student in a bluebonnet print rain poncho on library steps with a plush bluebonnet charm on her backpack"><span class="ph">Add assets/mocks/campus-library.jpg</span><span class="cap">Between classes</span></div>
+      <div class="shot missing g-d" data-photo="assets/mocks/full-set.jpg" data-alt="All five Texas plush pouch charms in a row"><span class="ph">Add assets/mocks/full-set.jpg</span><span class="cap">The full set</span></div>
+    </div>
+  </section>
+
+  <section id="how" style="padding-block:0 72px">
+    <div class="how">
+      <span class="label">How it works</span>
+      <h2 style="margin-top:12px">clip it, unfold it, stay dry</h2>
+      <div class="steps">
+        <div class="step"><div class="ic">1</div><h3>clip it on</h3><p>Hang your pal from a bag zipper, tote strap or your keys. It is small and light, so it goes everywhere you do.</p></div>
+        <div class="step"><div class="ic">2</div><h3>unfold when it rains</h3><p>When sudden rain hits, unfold the charm into a lightweight poncho with a hood.</p></div>
+        <div class="step"><div class="ic">3</div><h3>keep your style dry</h3><p>The hood keeps your hair dry and the poncho covers your clothes. Fold it back into your pal when the rain stops.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why" style="padding-top:0">
+    <div class="sec-head">
+      <span class="label">Why puddle pals</span>
+      <h2>a charm with a rain plan</h2>
+      <p>Sudden rain does not wait for you to plan. A pal is already clipped on, so an extra poncho is there when the sky opens.</p>
+    </div>
+    <div class="cmp">
+      <div class="box"><span class="label">Umbrella</span><h3>one more thing</h3><p>Needs a free hand and takes up room in a heavy bag.</p></div>
+      <div class="box"><span class="label">Disposable poncho</span><h3>plain and thin</h3><p>Single use, with no personality and nothing you would clip to your bag.</p></div>
+      <div class="box us"><span class="label">Puddle pals</span><h3>already on your bag</h3><p>A collectible charm you chose, with an extra poncho folded inside.</p></div>
+    </div>
+  </section>
+
+
+  <section id="mission" style="padding-top:0">
+    <div class="mission">
+      <div>
+        <span class="label">Our mission</span>
+        <p class="m">Puddle Pals makes rainy days easier to love. Our collectible Texas charms clip onto your bag and unfold into a poncho when the sky opens, so you stay dry and keep your style.</p>
+      </div>
+      <img src="assets/logo-mark-reverse.svg" alt="" width="120" height="156">
+    </div>
+  </section>
+
+  <section id="faq" style="padding-top:0">
+    <div class="sec-head"><span class="label">Questions</span><h2>good to know</h2></div>
+    <div class="faq">
+      <details><summary>What is inside each pal?</summary><p>Each pal is a soft plush zip pouch with a metal clip. Inside is a lightweight, waterproof hooded poncho folded small. Unzip, unfold, and fold it back into your pal when the rain stops.</p></details>
+      <details><summary>How are pals packaged, and can I give one as a gift?</summary><p>Every pal comes in its own individual package, so each one is ready to give or keep. The trio and the full set arrive together in one gift box. To send a gift, mark your order as a gift at checkout, add a note, and choose gift packaging for a small extra fee.</p></details>
+      <details><summary>How much does it cost?</summary><p>A single pal is $16. The trio, any three pals in one box, is $42. The full set of all five pals is $64. Gift packaging is $3 per order. Prices are early launch pricing.</p></details>
+      <details><summary>How long does shipping take?</summary><p>Orders ship from Houston, Texas within 3 to 5 business days. Standard delivery in the continental United States then takes about 3 to 5 days, and you get tracking by email.</p></details>
+      <details><summary>Are other states coming?</summary><p>Texas first. We plan to add pals for more states, each with its own local characters.</p></details>
+    </div>
+  </section>
+
+  <section id="find" style="padding-top:0">
+    <div class="closer">
+      <div>
+        <span class="label">Ready for the next downpour</span>
+        <h2>find your pal</h2>
+      </div>
+      <div class="cta"><a class="btn orange" href="#shop">Shop the pals</a><a class="btn ghost" href="#setsec">See the sets</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <img src="assets/logo-lockup.svg" alt="puddle pals" width="160" height="37">
+    <p>Rain protection that clips on. Houston, Texas. A University of Houston student project.</p>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Cart" hidden>
+  <header><h3>your cart</h3><button class="x" id="closeCart" type="button" aria-label="Close cart">&times;</button></header>
+  <div class="lines" id="lines"></div>
+  <div class="foot" id="cartFoot"></div>
+</aside>
+
+<script src="app.js"></script>
+</body>
+</html>
