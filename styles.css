@@ -263,3 +263,7 @@ footer p { color: var(--muted); font-size: 14px; max-width: 60ch; }
 @media (prefers-reduced-motion:reduce){.how-video video{animation:none}}
 
 .line .th img{display:block;width:100%;height:100%;object-fit:cover}
+
+.brk{display:flex;flex-direction:column;gap:6px;font-size:15px}
+.brk .r{display:flex;justify-content:space-between}
+.brk .tt{font-weight:700;font-size:18px;border-top:1px solid var(--hair);padding-top:8px;margin-top:4px}

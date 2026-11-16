@@ -8,6 +8,9 @@
   var FULL_PRICE = 64;
   // Placeholder gift packaging fee, charged once per order. Change it here.
   var GIFT_FEE = 3;
+  // Flat shipping fee per order and sales tax rate (Houston, TX: 6.25% state plus 2% local). Change them here.
+  var SHIP_FEE = 4.99;
+  var TAX_RATE = 0.0825;
 
   var PALS = [
     { id: "longhorn", name: "longhorn", color: "c-cobalt", story: "Stands tall in any storm and never loses its cool. Rides along from the garage to class." },
@@ -216,15 +219,23 @@
         '<label class="chk" for="coGift"><input id="coGift" type="checkbox"> This is a gift</label>' +
         '<div id="giftBox" hidden><label class="chk" for="coPack"><input id="coPack" type="checkbox"> Add gift packaging (+' + money(GIFT_FEE) + ')</label><label for="coNote">Gift note (optional)</label><textarea id="coNote" maxlength="200"></textarea></div>' +
         '<p class="small">Preview checkout for a class project. We do not ask for card details and nothing is charged.</p>';
-      var go = el("button", "btn orange", "Place preorder for " + money(total)); go.type = "submit";
-      var tot = el("div", "sub", "<span>Total</span><span id=\"coTotal\">" + money(total) + "</span>");
+      var go = el("button", "btn orange", "Place preorder"); go.type = "submit";
+      var tot = el("div", "brk");
       function recalc() {
         var gift = f.querySelector("#coGift").checked, pack = gift && f.querySelector("#coPack").checked;
-        var t = total + (pack ? GIFT_FEE : 0);
+        var fee = pack ? GIFT_FEE : 0;
+        var tax = Math.round((total + fee + SHIP_FEE) * TAX_RATE * 100) / 100;
+        var t = total + fee + SHIP_FEE + tax;
+        tot.innerHTML =
+          '<div class="r"><span>Subtotal</span><span>' + money(total) + '</span></div>' +
+          (pack ? '<div class="r"><span>Gift packaging</span><span>' + money(fee) + '</span></div>' : '') +
+          '<div class="r"><span>Shipping (flat rate)</span><span>' + money(SHIP_FEE) + '</span></div>' +
+          '<div class="r"><span>Sales tax (' + (TAX_RATE * 100).toFixed(2).replace(/0+$/, "") + '%)</span><span>' + money(tax) + '</span></div>' +
+          '<div class="r tt"><span>Total</span><span>' + money(t) + '</span></div>';
         go.textContent = "Place preorder for " + money(t);
-        tot.lastChild.textContent = money(t);
       }
       f.appendChild(go);
+      recalc();
       f.querySelector("#coGift").addEventListener("change", function (e) { f.querySelector("#giftBox").hidden = !e.target.checked; recalc(); });
       f.querySelector("#coPack").addEventListener("change", recalc);
       f.addEventListener("submit", function (e) { e.preventDefault(); step = "done"; renderCart(); });
@@ -265,7 +276,7 @@
       lines.appendChild(li);
     });
     foot.appendChild(el("div", "sub", "<span>Subtotal</span><span>" + money(total) + "</span>"));
-    foot.appendChild(el("p", "small", "Shipping is calculated at checkout."));
+    foot.appendChild(el("p", "small", "Shipping and sales tax are added at checkout."));
     var co = el("button", "btn orange", "Checkout"); co.type = "button";
     co.addEventListener("click", function () { step = "checkout"; renderCart(); });
     foot.appendChild(co);
