@@ -320,3 +320,7 @@ footer p { color: var(--muted); font-size: 14px; max-width: 60ch; }
 @media (prefers-reduced-motion:reduce){.ribbon .rt{animation:none}.card:hover,.card:nth-child(even):hover{transform:none}.cart-btn .count.bump{animation:none}}
 
 html{overflow-x:clip}
+
+/* how it works video sized to fit a laptop screen with its heading */
+.how-video{width:min(100%,calc((100vh - 300px) * 1.977));min-width:min(100%,480px);margin:24px auto 8px}
+.how-video video{width:100%;height:auto;max-height:none;aspect-ratio:1024/518;object-fit:cover}
