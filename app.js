@@ -236,19 +236,20 @@
       return;
     }
 
+    function thumb(src, alt) { return '<img src="' + src + '" alt="' + alt + '" loading="lazy">'; }
     Object.keys(cart).forEach(function (key) {
       var title, sub, thHtml;
       if (key === "full") {
         title = "The full set"; sub = "All five pals in one box, " + money(FULL_PRICE);
-        thHtml = '<div class="d c-cobalt"><div class="shape"></div><div class="nm">all 5</div></div>';
+        thHtml = thumb("assets/packaging/full.jpg", "The full set");
       } else if (key.indexOf("trio:") === 0) {
         var ids = key.slice(5).split("+");
         title = "Trio set"; sub = ids.map(function (i) { return cap(palById(i).name); }).join(", ") + " in one box, " + money(TRIO_PRICE);
-        thHtml = drop(palById(ids[0]));
+        thHtml = thumb("assets/packaging/trio.jpg", "Trio set");
       } else {
         var p = palById(key);
         title = cap(p.name); sub = money(PRICE) + " each, packaged individually";
-        thHtml = drop(p);
+        thHtml = thumb("assets/products/" + p.id + ".jpg", p.name);
       }
       var li = el("div", "line");
       var th = el("div", "th", thHtml);
