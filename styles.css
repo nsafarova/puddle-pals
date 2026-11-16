@@ -324,3 +324,7 @@ html{overflow-x:clip}
 /* how it works video sized to fit a laptop screen with its heading */
 .how-video{width:min(100%,calc((100vh - 300px) * 1.977));min-width:min(100%,480px);margin:24px auto 8px}
 .how-video video{width:100%;height:auto;max-height:none;aspect-ratio:1024/518;object-fit:cover}
+
+/* faq full width */
+#faq .faq{max-width:none;width:100%}
+#faq .faq details p{max-width:none}
