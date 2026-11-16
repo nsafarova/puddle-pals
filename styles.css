@@ -363,3 +363,4 @@ html{overflow-x:clip}
 .ribbon{position:relative;z-index:1}
 .nav{z-index:40}
 @media (max-width:860px){.nav ul{z-index:41}}
+.codeRow{display:flex;gap:8px}.codeRow input{flex:1;min-width:0}

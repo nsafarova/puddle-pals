@@ -229,6 +229,11 @@
   function add(id) { cart[id] = (cart[id] || 0) + 1; save(); renderCart(); }
   function change(id, d) { cart[id] = (cart[id] || 0) + d; if (cart[id] <= 0) delete cart[id]; save(); renderCart(); }
 
+  // Discount code: CAMPUS20 gives 20% off trio sets. The campus QR code opens the site with ?code=CAMPUS20.
+  var PROMO = { code: "CAMPUS20", pct: 0.2 };
+  var promo = "";
+  try { var qp = new URLSearchParams(location.search).get("code"); if (qp) localStorage.setItem("pp-code", qp.toUpperCase()); promo = localStorage.getItem("pp-code") || ""; } catch (e) {}
+  function trioTotal() { return Object.keys(cart).reduce(function (n, k) { return n + (k.indexOf("trio:") === 0 ? cart[k] * TRIO_PRICE : 0); }, 0); }
   var step = "cart"; // cart | checkout | done
   var lastFocus = null;
 
@@ -257,6 +262,7 @@
       f.innerHTML =
         '<label for="coName">Name</label><input id="coName" required autocomplete="name">' +
         '<label for="coEmail">Email</label><input id="coEmail" type="email" required autocomplete="email">' +
+        '<label for="coCode">Discount code</label><div class="codeRow"><input id="coCode" autocomplete="off" placeholder="Enter code"><button type="button" class="btn ghost sm" id="coApply">Apply</button></div><p class="small" id="codeMsg"></p>' +
         '<label class="chk" for="coGift"><input id="coGift" type="checkbox"> This is a gift</label>' +
         '<div id="giftBox" hidden><label class="chk" for="coPack"><input id="coPack" type="checkbox"> Add gift packaging (+' + money(GIFT_FEE) + ')</label><label for="coNote">Gift note (optional)</label><textarea id="coNote" maxlength="200"></textarea></div>' +
         '<p class="small">Preview checkout for a class project. We do not ask for card details and nothing is charged.</p>';
@@ -265,10 +271,15 @@
       function recalc() {
         var gift = f.querySelector("#coGift").checked, pack = gift && f.querySelector("#coPack").checked;
         var fee = pack ? GIFT_FEE : 0;
-        var tax = Math.round((total + fee + SHIP_FEE) * TAX_RATE * 100) / 100;
-        var t = total + fee + SHIP_FEE + tax;
+        var ok = promo === PROMO.code, tt = trioTotal();
+        var disc = ok ? Math.round(tt * PROMO.pct * 100) / 100 : 0;
+        var msg = f.querySelector("#codeMsg");
+        msg.textContent = !promo ? "" : ok ? (tt ? PROMO.code + " applied: 20% off your trio." : PROMO.code + " is saved. It takes 20% off a trio set.") : "That code is not valid.";
+        var tax = Math.round((total - disc + fee + SHIP_FEE) * TAX_RATE * 100) / 100;
+        var t = total - disc + fee + SHIP_FEE + tax;
         tot.innerHTML =
           '<div class="r"><span>Subtotal</span><span>' + money(total) + '</span></div>' +
+          (disc ? '<div class="r"><span>Discount ' + PROMO.code + '</span><span>&minus;' + money(disc) + '</span></div>' : '') +
           (pack ? '<div class="r"><span>Gift packaging</span><span>' + money(fee) + '</span></div>' : '') +
           '<div class="r"><span>Shipping (flat rate)</span><span>' + money(SHIP_FEE) + '</span></div>' +
           '<div class="r"><span>Sales tax (' + (TAX_RATE * 100).toFixed(2).replace(/0+$/, "") + '%)</span><span>' + money(tax) + '</span></div>' +
@@ -276,6 +287,12 @@
         go.textContent = "Place preorder for " + money(t);
       }
       f.appendChild(go);
+      f.querySelector("#coCode").value = promo;
+      f.querySelector("#coApply").addEventListener("click", function () {
+        promo = f.querySelector("#coCode").value.trim().toUpperCase();
+        try { if (promo) localStorage.setItem("pp-code", promo); else localStorage.removeItem("pp-code"); } catch (e) {}
+        recalc();
+      });
       recalc();
       f.querySelector("#coGift").addEventListener("change", function (e) { f.querySelector("#giftBox").hidden = !e.target.checked; recalc(); });
       f.querySelector("#coPack").addEventListener("change", recalc);
