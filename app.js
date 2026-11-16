@@ -107,7 +107,9 @@
     var body = el("div", "body");
     body.innerHTML =
       '<span class="label tag">Texas pal</span><h3>' + p.name + "</h3><p>" + p.story + "</p>" +
+      '<button class="more" type="button">View details</button>' +
       '<div class="row"><span class="price">' + money(PRICE) + '</span></div>';
+    body.querySelector(".more").addEventListener("click", function () { openPal(p); });
     var btn = el("button", "btn sm", "Add to cart");
     btn.type = "button";
     btn.addEventListener("click", function () { add(p.id); clipped(btn); });
@@ -115,6 +117,45 @@
     card.appendChild(shot); card.appendChild(body);
     grid.appendChild(card);
   });
+
+  // Product detail pop up
+  var palDlg = el("dialog", "paldlg"); palDlg.setAttribute("aria-label", "Product details");
+  document.body.appendChild(palDlg);
+  palDlg.addEventListener("click", function (e) { if (e.target === palDlg) palDlg.close(); });
+  function openPal(p) {
+    var photos = [
+      { src: "assets/products/" + p.id + ".jpg", alt: "The " + p.name + " puddle pal plush charm" },
+      { src: "assets/packaging/single-" + p.id + ".jpg", alt: "The " + p.name + " in its individual package" },
+      { src: "assets/mocks/poncho-pouch.jpg", alt: "A pal unzipped to show the folded poncho inside" },
+      { src: "assets/mocks/campus-library.jpg", alt: "A student in the bluebonnet print poncho on rainy library steps" }
+    ];
+    palDlg.innerHTML =
+      '<button class="x" type="button" aria-label="Close">&times;</button>' +
+      '<div class="pd"><div class="pd-media"><div class="pd-main"><img alt=""></div><div class="pd-thumbs"></div></div>' +
+      '<div class="pd-info"><span class="label tag">Texas pal</span><h2>' + p.name + '</h2><p class="pd-story">' + p.story + '</p>' +
+      '<div class="pd-price">' + money(PRICE) + '<span class="small"> packaged individually</span></div>' +
+      '<h3>what is inside</h3><ul class="pd-list">' +
+      '<li>A soft collectible plush charm with an embroidered face</li>' +
+      '<li>A zip pouch with a metal clip for your bag, tote or keys</li>' +
+      '<li>A clear, lightweight waterproof poncho with a hood and a bluebonnet print, folded inside</li></ul>' +
+      '<h3>how it works</h3><ol class="pd-steps"><li><b>Clip it</b> on your bag.</li><li><b>Unzip it</b> when the rain starts.</li><li><b>Unfold it</b> and stay dry, then fold it back in.</li></ol>' +
+      '<div class="pd-cta"></div></div></div>';
+    var main = palDlg.querySelector(".pd-main img"), th = palDlg.querySelector(".pd-thumbs");
+    function show(i) {
+      main.src = photos[i].src; main.alt = photos[i].alt;
+      Array.prototype.forEach.call(th.children, function (b, k) { b.classList.toggle("on", k === i); });
+    }
+    photos.forEach(function (ph, i) {
+      var b = el("button", null, '<img src="' + ph.src + '" alt="">'); b.type = "button"; b.setAttribute("aria-label", "Photo " + (i + 1));
+      b.addEventListener("click", function () { show(i); }); th.appendChild(b);
+    });
+    show(0);
+    var add2 = el("button", "btn orange", "Add to cart"); add2.type = "button";
+    add2.addEventListener("click", function () { add(p.id); palDlg.close(); clipped($("openCart")); });
+    palDlg.querySelector(".pd-cta").appendChild(add2);
+    palDlg.querySelector(".x").addEventListener("click", function () { palDlg.close(); });
+    if (palDlg.showModal) palDlg.showModal(); else palDlg.setAttribute("open", "");
+  }
 
   // gallery
   Array.prototype.forEach.call(document.querySelectorAll("[data-photo]"), function (box) {
@@ -287,9 +328,11 @@
   function clipped(btn) {
     var target = $("openCart"), cnt = $("cartCount");
     cnt.classList.remove("bump"); void cnt.offsetWidth; cnt.classList.add("bump");
-    var old = btn.textContent;
-    btn.textContent = "Clipped!"; btn.classList.add("ok");
-    setTimeout(function () { btn.textContent = old; btn.classList.remove("ok"); }, 1300);
+    if (btn !== target) {
+      var old = btn.textContent;
+      btn.textContent = "Clipped!"; btn.classList.add("ok");
+      setTimeout(function () { btn.textContent = old; btn.classList.remove("ok"); }, 1300);
+    }
     if (reduce || !btn.animate) { openCart(); return; }
     var a = btn.getBoundingClientRect(), b = target.getBoundingClientRect();
     var d = el("div", "flydrop"); document.body.appendChild(d);
